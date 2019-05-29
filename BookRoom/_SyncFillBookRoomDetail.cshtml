@@ -1,0 +1,82 @@
+﻿
+@model MRM.Web.ViewModel.ViewModelCalendarRoomDetail
+<div style="width: 100%;">
+    <div class="table-responsive">
+        @if (Model.RoomDetailListCal.Count != 0)
+        {
+
+            <table class="table table-bordered table-hover tblAvailableRoom" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th class="tblheader">No.</th>
+                        <th class="tblheader">Room Number</th>
+                        <th class="tblheader">Subject</th>
+                        <th class="tblheader">StartTime</th>
+                        <th class="tblheader">EndTime</th>
+                        <th class="tblheader cls_action">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.RoomDetailListCal)
+                    {
+
+                        <tr>
+                            <td class="tbl50 tblheader">@item.Count</td>                         
+                            <td title="@item.RoomNumber" class="tbl150 tblheader">
+                                @item.RoomNumber
+                            </td>
+                            <td class="tbl50 tblheader"> @item.BookSubject</td>
+                            <td title="@item.StartDate" class="tbl150 tblheader">
+                                @item.StartDate
+                            </td>
+                            <td title="@item.StartDate" class="tbl150 tblheader">
+                                @item.StartDate
+                            </td>
+                            <td class="tbl150 tblheader">
+                                <a href="@Url.Action("BookRoomFilter", "BookRoom" ,new { @BookRoomId=item.BookRoomId})" style="margin-left: 22px;"><i class="far fa-edit"></i></a>
+                                @*<button class="btn btn-success" id="btnFillRoom_@item.Count" style="width:95px">Add RoomDetails </button>*@
+                                <input type="hidden" id="hdnRoomId" value="@item.RoomId" />
+                                <input type="hidden" id="hdnRoomsubject" value="@item.BookSubject"/>
+                                <input type="hidden" id="hdnRoomNumber" value="@item.RoomNumber" />
+                                <input type="hidden" id="hdnStartDate" value="@item.StartDate" />
+                                <input type="hidden" id="hdnRoomTypeName" value="@item.RoomTypeName" />
+                            </td>
+                        </tr>
+
+                    }
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h3 class="col-md-4 col-md-offset-5">No Room Available</h3>
+        }
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        @*if ('@ViewBag.largestart' == "largestart") {
+                toastr.success('Room Created Successfully');
+        }*@
+        $('.tblAvailableRoom').DataTable({
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            "sDom": 'Rfrtlip',
+            "pageLength": 10,
+            'ordering': true,
+            'info': true,
+            //'autoWidth': false,
+            'lengthMenu': [[5, 10, 15, 20, 25], [5, 10, 15, 20, 25]],
+            'scrollX': true,
+            //"scrollY": "600px",
+            //"scrollCollapse": true,
+            //"sScrollX": "100%",
+            //"sScrollXInner": "100%",
+        });
+
+    });
+
+</script>

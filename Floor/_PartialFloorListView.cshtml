@@ -1,0 +1,40 @@
+﻿
+@model IList<MRM.Web.ViewModel.ViewModelFloor>
+
+
+<div style="width: 100%;">
+    <div class="table-responsive" style="width: 98%;">
+        <table class="table  table-bordered  table-striped  tblFloor" cellspacing="0">
+            <thead>
+                <tr class="">
+                    <th  class="tblheader">No.</th>
+                    <th  class="tblheader">Floor Name</th>
+                    <th  class="tblheader">Description</th>
+                    <th class="cls_action tblheader">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="@item.DId" class="">
+                        <td class="tbl50 tblheader countclass countclass">
+                            @item.Count
+                        </td>
+                        <td title="@item.FloorName" class="tbl200 tblheader">
+                            @item.FloorName
+                        </td>
+                        <td  title="@item.Description" class="tbl350 tblheader">
+                            @item.Description
+                        </td>
+                        <td class="tbl150 tblheader" style=" text-align: -webkit-center">
+                            <input type="checkbox" data-toggle="toggle" id="toggletrigger_@item.FloorId" @(item.Status == 1 ? "checked=\"checked\"" : "") onchange="fonctionTest('@item.FloorId', '@item.Status')" />
+                            <a href="@Url.Action("Edit", "Floor" ,new { @id=item.FloorId})" style="margin-left: 22px;"><i class="far fa-edit"></i></a>
+                            <a class="btn btn-trash" type="button" id="DeleteFloorbtn_@item.FloorId" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal"><i class="far fa-trash-alt"></i></a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

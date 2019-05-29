@@ -1,0 +1,48 @@
+﻿
+
+@model IList<MRM.Web.ViewModel.ViewModelRoom>
+<div style="width: 100%;">
+    <div class="table-responsive" style="width: 98%;">
+        <table class="table table-bordered table-hover rooms" cellspacing="0" >
+            <thead>
+                <tr class="">
+                    <th class="tblheader">No.</th>
+                    <th class="tblheader">Room Name</th>
+                    @*<th>Capacity</th>*@
+                    <th class="tblheader">Floor</th>
+                    <th class="tblheader">Room Type</th>
+                    <th class="tblheader">Description</th>
+                    <th class="cls_action tblheader ">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr id="@item.DId" class="">
+                    <td class="tbl30 tblheader">
+                        @item.Count
+                    </td>
+                    <td  title="@item.RoomName" class="tbl100 tblheader">
+                        @item.RoomName
+                    </td>
+                    <td  title="@item.Floor" class="tbl50 tblheader">
+                        @item.Floor
+                    </td>
+                    <td   title="@item.Roomtype" class="tbl50 tblheader">
+                        @item.Roomtype
+                    </td>
+                    <td  title="@item.Description" class="tbl250 tblheader">
+                        @item.Description
+                    </td>
+                    <td class="tbl150 tblheader" style="text-align: -webkit-center">
+                        <input type="checkbox" data-toggle="toggle" id="toggletrigger_@item.RoomId" @(item.Status == 1 ? "checked=\"checked\"" : "") onchange="fonctionTest('@item.RoomId', '@item.Status')" />
+                        <a href="@Url.Action("Edit", "Rooms" ,new { @id=item.RoomId})" style="margin-left: 22px;"><i class="far fa-edit"></i></a>
+                        <a class="btn btn-trash" type="button" id="DeleteRoombtn_@item.RoomId" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#myModal"><i class="far fa-trash-alt"></i></a>
+                        
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

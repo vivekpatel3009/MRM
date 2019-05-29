@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+<link rel="stylesheet" href="http://cdn.datatables.net/plug-ins/a5734b29083/integration/bootstrap/3/dataTables.bootstrap.css" />
+<link rel="stylesheet" href="http://cdn.datatables.net/responsive/1.0.2/css/dataTables.responsive.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+<script src="~/Scripts/Lib/jquery.js"></script>
+<div class="row" id="domMessage" style="display: none;">
+    <img id="loading"
+         alt="Updating ..." src="~/Content/Img/loader-large.gif" /><br />  Processing your request.
+</div>
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Manage Floor</h3>
+        </div>
+        <div class="box-body">
+            <div class="innerContent">
+                <!-- Add Room Type -->
+                <div class="col-md-3 pull-left">
+                    @Html.ActionLink("Create New Floor", "Create", "Floor", null, new { @class = "btn btn-primary  btn-block" })
+                </div>
+                <div class="bodyContent FloorTableDiv">
+                    @Html.Action("List", "Floor")
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.box -->
+</section>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><b><span id="eventTitle">Confirm Floor Deletion</span></b></h4>
+            </div>
+            <div id="CalenderBody" class="modal-body">
+                <p id="pDetails"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Cancle</button>
+                <button type="button" id="DeleteFloorAllRef" class="btn btn-info pull-right">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModalACT" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><b><span id="eventTitle">Change Status</span></b></h4>
+            </div>
+            <div id="CalenderBody" class="modal-body">
+                <p id="pDetails"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="activepopupClose()" class="btn btn-info" data-dismiss="modal">Cancle</button>
+                <button type="button" id="ActFloorAllRef" class="btn btn-info pull-right">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModalDACT" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><b><span id="eventTitle">Change Status</span></b></h4>
+            </div>
+            <div id="CalenderBody" class="modal-body">
+                <p id="pDetails"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="activepopupClose()" class="btn btn-info" data-dismiss="modal">Cancle</button>
+                <button type="button" id="DACTFloorAllRef" class="btn btn-info pull-right">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content -->
+
+<script src="~/Scripts/Custom/Floor.js"></script>
+@section scripts
+{
+    <script>
+        $(function () {
+
+            $.unblockUI();
+              if ('@TempData["create"]' == "donecrate") {
+                toastr.success('Floor Created Successfully Successfully');
+            } else if ('@TempData["update"]' == "doneupdate") {
+                  toastr.success('Floor Updated Successfully Successfully');
+            }
+            $("#dropdownmenuuser").click(function () {
+                $("#dropdownmenuuser").toggleClass('open');
+            });
+            $('.tblFloor').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                "sDom": 'Rfrtlip',
+                "pageLength": 10,
+                //'ordering': true,
+                //'info': true,
+                'autoWidth': false,
+                //'scrollX': true,
+              //  'lengthMenu': [[5, 10, 15, 20, 25], [5, 10, 15, 20, 25]],
+                //"fixedColumns": true,
+                //"sScrollX": "100%",
+                //"sScrollXInner": "100%",
+                //"bScrollCollapse": true,
+                //"columnDefs": [{
+                //    "targets": 'countclass',
+                //    "orderable": false,
+                //}]
+            });
+        });
+    </script>
+
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+}

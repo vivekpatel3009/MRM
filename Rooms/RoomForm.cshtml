@@ -1,0 +1,202 @@
+﻿@model MRM.Web.ViewModel.ViewModelRoom
+
+@{
+    ViewBag.Title = "RoomForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/Lib/jquery.js"></script>
+<script src="~/Scripts/Custom/Room.js"></script>
+<script src="~/Scripts/Custom/CustomJS.js"></script>
+<div class="row" id="domMessage" style="display: none;">
+    <img id="loading" alt="Updating ..." src="~/Content/Img/loader-large.gif" /><br />  Processing your request.
+</div>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Room</h3>
+                </div>
+                <!-- /.box-header -->
+                @using (Html.BeginForm("Edit", "Rooms", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" ,id= "updateroomload" }))
+                {
+                    <div class="box-body">
+                        <div class="form-group">
+                            <div class="col-md-6 col-xs-12 mb-15 mb-md-0">
+                                <label for="name" class="col-sm-4 col-md-3 control-label">Room Name</label>
+                                <div class="col-sm-8 col-md-9">
+                                    @Html.TextBoxFor(t => t.RoomName, new { @maxlength = 120, @class = "form-control", id = "name", placeholder = "Name" })
+                                    @Html.ValidationMessageFor(model => model.RoomName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-12">
+                                <label for="roomNumber" class="col-sm-4 col-md-3 control-label">Room Number</label>
+                                <div class="col-sm-8 col-md-9">
+                                    @Html.TextBoxFor(t => t.RoomNumber, new { @maxlength = 8, @class = "form-control", id = "roomNumber", placeholder = "Number" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-xs-12 mb-15 mb-md-0">
+                                <label for="Start" class="col-sm-4 col-md-3 control-label required">MinCapacity (Person)</label>
+                                <div class="col-sm-8 col-md-9">
+                                    @Html.TextBoxFor(t => t.MinCapacity, new { @maxlength = 3, @class = "form-control", id = "MinCapacity", placeholder = "MinCapacity" })
+                                    @Html.ValidationMessageFor(model => model.MinCapacity, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-12">
+                                <label for="Start" class="col-sm-4 col-md-3 control-label required">MaxCapacity (Person)</label>
+                                <div class="col-sm-8 col-md-9">
+                                    @Html.TextBoxFor(t => t.MaxCapacity, new { @maxlength = 3, @class = "form-control", id = "MaxCapacity", placeholder = "MaxCapacity" })
+                                    @Html.ValidationMessageFor(model => model.MaxCapacity, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        @*<div class="form-group">
+                                <label for="inputDiscription" class="col-sm-2 control-label">Status</label>
+                                <div class="col-sm-10" style="margin-top: 7px;">
+                                @Html.RadioButtonFor(m => m.Status, 1, Model.Status == 1 ? new { @name = "Active", Checked = "checked" } : null)   Active
+                                @Html.RadioButtonFor(m => m.Status, 0, Model.Status == 0 ? new { @name = "InActive", Checked = "checked" } : null)  InActive
+                                 </div>
+                            </div>*@
+                        <div class="form-group">
+                            <div class="col-md-6 col-xs-12 mb-15 mb-md-0">
+                                <label for="Start" class="col-sm-4 col-md-3 control-label required">RoomType</label>
+                                <div class="col-sm-8 col-md-9">
+                                    @Html.DropDownListFor(model => model.RoomTypeId, new SelectList(ViewBag.RoomtypeListVB, "RoomTypeId", "RoomtypeName"), "- Please Select RoomType -")
+                                    @Html.ValidationMessageFor(model => model.RoomTypeId)
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-12">
+                                <label for="Start" class="col-sm-4 col-md-3 control-label required">Floor</label>
+                                <div class="col-sm-8 col-md-9">
+                                    @Html.DropDownListFor(model => model.FloorId, new SelectList(ViewBag.FloorListVB, "FloorId", "FloorName"), "- Please Select Floor -")
+                                    @Html.ValidationMessageFor(model => model.FloorId)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @*<div class="col-md-6">
+                                    <label for="Start" class="col-sm-3 control-label required">Capacity</label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(t => t.Capacity, new { @class = "form-control", id = "capacity", type = "number", min = "1", placeholder = "Capacity" })
+                                        @Html.ValidationMessageFor(model => model.Capacity, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+                            <div class="col-md-6 col-xs-12 mb-15 mb-md-0">
+                                <label for="Photos" class="col-sm-4 col-md-3 control-label">Photos</label>
+                                <input type="file" class="col-sm-6 mb-15 mb-sm-0" name="file" multiple="multiple" />
+                                <div class="col-sm-2 col-md-3 pl-sm-0"><button type="button" id="Clearfile" class="btn btn-info ">Clear</button></div>
+
+                            </div>
+                            <div class="col-md-6 col-xs-12">
+                                <label for="Start" class="col-sm-4 col-md-3 control-label required">Description</label>
+                                <div class="col-sm-8 col-md-9">
+                                    @Html.TextAreaFor(t => t.Description, new { @maxlength = 200, @class = "form-control", id = "description", rows = "3", placeholder = "Description" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <ul class="attachment list-group col-md-12 room-list">
+                                    @foreach (var item in Model.RoomPictureMappingsList)
+                                    {
+                                        <li class="list-group-item  col-md-6">
+                                            <div class="media d-flex">
+                                                <div class="media-thumb">
+                                                    <img src="~/Rotativa/RoomImage/@item.FileName" height="120px" />
+                                                </div>
+
+                                                <div class="media-body media-bd">
+                                                    <div class="title col-xs-12" href="/Rooms/Download/?p=@(item.RoomPictureMappingId + item.Extension)&d=@item.FileName">@item.ActualFileName</div>
+                                                    <a href="javascript:void(0);" data-id="@item.RoomPictureMappingId" class="deleteItem btn btn-info ml-15 mt-15">Delete</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    @*@Html.HiddenFor(m => m.IsEdit)*@
+                    @Html.HiddenFor(m => m.RoomId)
+                    @Html.AntiForgeryToken()
+                    <div class="box-footer">
+                        @Html.ActionLink("Cancel", "Index", "Rooms", null, new { @class = "btn btn-default" })
+                        <button type="submit" class="btn btn-info pull-right">Save</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+          if ('@ViewBag.MinMax' == "MinMax") {
+                toastr.warning('Min Capacity should be less than to Max capacity');
+          }
+        $("#dropdownmenuuser").click(function () {
+            $("#dropdownmenuuser").toggleClass('open');
+        });
+        $("#FloorId").addClass("form-control");
+        $("#RoomTypeId").addClass("form-control");
+    });
+    $("#Clearfile").on("click", function () {
+        var input = $("input[name=file]");
+        var fileName = input.val();
+        if (fileName) { // returns true if the string is not empty
+            input.val('');
+        }
+    });
+    $("#roomNumber,#MinCapacity,#MaxCapacity").keypress(function (evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode != 43 && charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    });
+    $('.deleteItem').click(function (e) {
+        e.preventDefault();
+        var $ctrl = $(this);
+        if (confirm('Do you really want to delete this item?')) {
+            $.ajax({
+                url: '/Rooms/DeleteFile',
+                type: 'POST',
+                data: { id: $(this).data('id') }
+            }).done(function (data) {
+                if (data.Result == "OK") {
+                    $ctrl.closest('tr').remove();
+                    window.location.reload();
+                }
+                else if (data.Result.Message) {
+                    alert(data.Result.Message);
+                }
+            }).fail(function () {
+                alert("There is something wrong. Please try again.");
+            })
+
+        }
+    });
+    $("#updateroomload").submit(function (e) {
+        $.blockUI({
+            css: {
+                border: '5px solid #3c8dbc',
+                borderRadius: '5px',
+                padding: '20px 0'
+            },
+            message: $('#domMessage')
+        });
+    });
+    $("#updateroomload").submit(function (e) {
+        $.blockUI({
+            css: {
+                border: '5px solid #3c8dbc',
+                borderRadius: '5px',
+                padding: '20px 0'
+            },
+            message: $('#domMessage')
+        });
+    });
+</script>

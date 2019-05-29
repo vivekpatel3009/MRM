@@ -1,0 +1,75 @@
+﻿@model MRM.Web.ViewModel.ViewModelLogin
+
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <title>Login | Meeting Room Management</title>
+    @Styles.Render("~/Content/loginCss")
+</head>
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="../../index2.html"><b>Meeting Room</b></a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            @*<p class="login-box-msg">Sign in to start your session</p>*@
+
+            @using (Html.BeginForm("Index", "Login", new { ReturnUrl = @Request.QueryString["ReturnUrl"] }))
+            {
+                @Html.ValidationMessage("Unexpected")
+
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(t => t.Email, new { @class = "form-control", placeholder = "Email" })
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    <div>
+                        @Html.ValidationMessageFor(m => m.Email)
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    @Html.PasswordFor(t => t.Password, new { @class = "form-control", placeholder = "Password" })
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    <div>
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="form-check">
+                            @Html.CheckBoxFor(t => t.Rememberme, new { id = "Rememberme" })  
+                            <label class="form-check-label" for="Rememberme">Remember Me</label>
+                        </div>
+                    </div>
+                    @Html.AntiForgeryToken()
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            }
+
+          
+            @Html.ActionLink("I forgot my password", "Index", "ForgotPassword", null, new { @class = "" })
+
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+</body>
+</html>
+
+@*Render common javascript files here*@
+@Scripts.Render("~/bundles/loginPageLib")
+
+<script>
+    $(function () {
+        //$('input').iCheck({
+        //    checkboxClass: 'icheckbox_square-blue',
+        //    radioClass: 'iradio_square-blue',
+        //    increaseArea: '20%' /* optional */
+        //});
+    });
+</script>

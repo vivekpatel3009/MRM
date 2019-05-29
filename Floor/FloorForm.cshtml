@@ -1,0 +1,87 @@
+﻿@model MRM.Web.ViewModel.ViewModelFloor
+@{
+    ViewBag.Title = "FloorForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+      /*.validation-summary-valid { display:none; }
+      .field-validation-error, label.error{ display:none; color: white; border: 2px solid white !important; }*/
+</style>
+<div class="row" id="domMessage" style="display: none;">
+
+    <img id="loading"
+         alt="Updating ..." src="~/Content/Img/loader-large.gif" /><br />  Processing your request.
+</div>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Create Floor</h3>
+                </div>
+                @*SaveFloor*@
+                @using (Html.BeginForm("Edit", "Floor", FormMethod.Post, new { @class = "form-horizontal", id = "floortablesupdate" }))
+                {
+                <div class="box-body">
+                    <div class="form-group">
+                        <div class="col-md-6 col-xs-12 mb-15 mb-md-0">
+                            <label for="inputFloorName" class="col-sm-3 control-label">Floor Name</label>
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(t => t.FloorName, new { @maxlength = 150, @class = "form-control", id = "FloorName", placeholder = "Floor Name" })
+                                @Html.ValidationMessageFor(model => model.FloorName, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-12">
+
+                            <label for="inputDescription" class="col-sm-3 control-label">Description</label>
+                            <div class="col-sm-9">
+                                @Html.TextAreaFor(t => t.Description, new { @maxlength = 200, rows = "3", @class = "form-control", id = "FloorDescription", placeholder = "Floor Description" })
+                            </div>
+                        </div>
+
+                    </div>
+                    @*<div class="form-group">
+            <label for="inputDiscription" class="col-sm-2 control-label" >Status</label>
+            <div class="col-sm-10" style="margin-top: 7px;">
+             @Html.RadioButtonFor(m => m.Status, 1,Model.Status==1 ? new {@name="Active", Checked = "checked" }: null )   Active
+                @Html.RadioButtonFor(m => m.Status, 0, Model.Status == 0 ? new { @name = "InActive", Checked = "checked" } : null)  InActive
+            </div>
+        </div>*@
+                </div>
+                    <!-- /.box-body -->
+
+                    @*@Html.HiddenFor(m => m.IsEdit)*@
+                    @Html.HiddenFor(m => m.FloorId)
+                    @Html.AntiForgeryToken()
+                    <div class="box-footer">
+                        @Html.ActionLink("Cancel", "Index", "Floor", null, new { @class = "btn btn-default" })
+                        <button class="btn btn-info pull-right">Save</button>
+                    </div>
+                }
+            </div>
+                </div>
+            </div>
+</section>
+
+@Scripts.Render("~/bundles/loginPageLib")
+<script>
+    $(function () {   
+        $.unblockUI();
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' /* optional */
+        });
+    });
+    $("#floortablesupdate").submit(function (e) {
+        $.blockUI({
+            css: {
+                border: '5px solid #3c8dbc',
+                borderRadius: '5px',
+                padding: '20px 0'
+            },
+            message: $('#domMessage')
+        });
+    });
+</script>

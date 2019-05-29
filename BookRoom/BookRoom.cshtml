@@ -1,0 +1,595 @@
+﻿@model MRM.Web.ViewModel.ViewModelCalendarRoomDetail
+@{
+    ViewBag.Title = "BookRoom";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+<link rel="stylesheet" href="http://cdn.datatables.net/plug-ins/a5734b29083/integration/bootstrap/3/dataTables.bootstrap.css" />
+<link rel="stylesheet" href="http://cdn.datatables.net/responsive/1.0.2/css/dataTables.responsive.css" />
+<script src="~/Scripts/Lib/jquery.js"></script>
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Search Room</h3>
+                </div>
+                <form class="form-horizontal" action="" method="post">
+                    <div class="box-body">
+
+                        <div class="form-group">
+                            <div class="col-md-12 col-lg-6 p-0">
+                                <div class="col-sm-12 mb-15">
+                                    @Html.LabelFor(m => m.OrderDate,new { @class="col-xs-12 col-sm-3 control-label required"});
+                                    @*<label for="Start" class="col-xs-12 col-sm-3 control-label required">Start Date</label>*@
+                                    <div class="col-xs-12 col-md-4  mb-15">
+                                        @*<div class='input-group date' id='datetimepickerStart'>
+                                            <input type='text' class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>*@
+                                        @Html.TextBoxFor(m => m.OrderDate, new { @class = "form-control",@id="orderdatepiker" })
+                                        @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    @*<label for="Start" class="col-sm-1 control-label required">Hour</label>*@
+                                    <div class="col-xs-6 col-sm-2 colanaf mb-15 mb-sm-0">
+                                        <input type="text" class="form-control" id="sHour" maxlength="2" placeholder="HH" onblur="validateTime(this)">
+                                        @*@Html.TextBoxFor(t => t.sHour, new { type = "text", @class = "form-control numMax", id = "sHour", maxlength = "2", placeholder = "HH" })*@
+                                        @*@Html.TextBoxFor(t => t.sHour, new { @class = "form-control", id = "sHour", type = "number", min = "0", max = "23", placeholder = "Capacity" })*@
+                                    </div>
+                                    @*<label for="Start" class="col-sm-1 control-label required">Min</label>*@
+                                    <div class="col-xs-6 col-sm-2 mb-sm-0 mb-15">
+                                        <input type="text" class="form-control" id="sMin" maxlength="2" placeholder="mm" onblur="validateTimesMin(this)">
+                                        @* @Html.TextBoxFor(t => t.sMin, new { @class = "form-control numMax", id = "sMin", maxlength = "2", type = "number", min = "1", max = "59", placeholder = "mm" })*@
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-12 mb-15">
+                                    <label for="End" class="col-xs-12 col-sm-3 control-label required">End Date</label>
+                                    <div class="col-xs-12 col-sm-5 mb-15 mb-sm-0">
+                                        <div class='input-group date' id='datetimepickerEnd'>
+                                            <input type='text' class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    @*<label for="Start" class="col-sm-1 control-label required">Hour</label>*@
+                                    <div class="col-xs-6 col-sm-2 colanaf mb-15 mb-sm-0">
+                                        <input type="text" class="form-control" id="eHour"  maxlength="2" placeholder="HH" onblur="validateTimeehour(this)">
+                                     @*   @Html.TextBoxFor(t => t.eHour, new { @class = "form-control numMax", maxlength = "2", id = "eHour", type = "text", placeholder = "HH" })*@
+                                    </div>
+                                    @*<label for="Start" class="col-sm-1 control-label required">Min</label>*@
+                                    <div class="col-xs-6 col-sm-2 mb-15 mb-sm-0">
+                                        <input type="text" class="form-control" id="eMin"  maxlength="2" placeholder="mm" onblur="validateTimeeMin(this)">
+                                        @*@Html.TextBoxFor(t => t.eMin, new { @class = "form-control numMax", maxlength = "2", id = "eMin", type = "number", min = "1", max = "59", placeholder = "mm" })*@
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 mb-15">
+                                    <label for="inputRoomType" class="col-sm-3 control-label required">Capacity (Person)</label>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(t => t.MinCapacity, new { @class = "form-control", maxlength = "3", id = "MINCapacity", type = "text", min = "1", placeholder = "Min Capacity" })
+                                    </div>
+
+                                    <label for="inputcapacity" class="col-xs-12 col-sm-1 control-label required">To</label>
+                                    <div class="col-xs-12 col-sm-4 mb-15 mb-sm-0">
+                                        @Html.TextBoxFor(t => t.MaxCapacity, new { @class = "form-control", maxlength = "3", id = "MAxCapacity", type = "text", min = "1", placeholder = "Max Capacity" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-12 col-lg-6 p-0">
+                                <div class="col-sm-12 mb-15">
+                                    <label for="inputFloorName" class="col-sm-3 control-label required">Floor</label>
+                                    <div class="col-sm-7">
+                                        @Html.DropDownListFor(model => model.FloorId, new SelectList(ViewBag.FloorListVB, "FloorId", "FloorName"), "- Please Select Floor -")
+                                        @Html.ValidationMessageFor(model => model.FloorId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 mb-15">
+                                    <label for="inputRoomType" class="col-sm-3 control-label required">RoomType</label>
+                                    <div class="col-sm-7">
+                                        @Html.DropDownListFor(model => model.RoomTypeId, new SelectList(ViewBag.RoomtypeListVB, "RoomTypeId", "RoomtypeName"), "- Please Select RoomType -")
+                                        @Html.ValidationMessageFor(model => model.RoomTypeId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-sm-offset-3">
+                                    <div class="pl-15 pl-sm-9">
+                                        <button type="button" class="btn btn-primary " id="FilterRooms">Search Room </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+@*<div class="row">
+    <div class="col-md-6"></div> <div class="col-md-4">
+        <img id="loading"
+             alt="Updating ..." style="display: none;" src="~/Content/Img/ajax-loader.gif" />
+    </div><div class="col-md-2"></div>
+</div>*@
+          <div class="row" id="domMessage" style="display: none;">
+              <img id="loading"
+                   alt="Updating ..." src="~/Content/Img/loader-large.gif" /><br />  Processing your request.
+          </div>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12 scrollbookroom">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title"></h3>
+                </div>
+                <div class="box-body">
+                    <div id="SectionPartialDiv">
+
+                        @Html.Action("PartialFilterRoom", "BookRoom")
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><b><span id="eventTitle">Create Event </span></b></h4>
+            </div>
+            <div id="CalenderBody" class="modal-body">
+                <p id="pDetails"></p>
+            </div>
+            <div class="modal-footer">
+                @Html.ActionLink("Cancel", "Index", "BookRoom", null, new { @class = "btn btn-default" })
+                <button type="button" id="SaveEventInfo" class="btn btn-info pull-right">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ConformBook" class="modal fade event-modal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><b><span id="eventTitle">Confirm Booking </span></b></h4>
+            </div>
+            <div id="CalenderBody" class="modal-body">
+                <p id="pDetails"></p>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Cancle</button>
+                <button type="button" id="ConformBookRoom" class="btn btn-info pull-right">Book</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Custom/CustomJS.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#orderdatepiker").datepicker({
+            format: "mm/dd/yyyy",
+            setDate: "",
+            autoclose: true
+        });
+
+        if ('@ViewBag.smin' != "") {
+            //$("#datetimepickerStart").datepicker("setDate", @ViewBag.startdatepik);
+            //$('#datetimepickerStart').val('2012-08-08')
+            //$('#datetimepickerStart').datepicker('update');
+            //$('#datetimepickerStart').datepicker().children('input').val('2012-08-08');
+            $("#sMin").val(@ViewBag.smin);
+            $("#sHour").val(@ViewBag.shour);
+            $("#eMin").val(@ViewBag.emin);
+            $("#eHour").val(@ViewBag.ehour);
+             // $('#datetimepickerStart').val('2012-08-08')
+             //$('#datetimepickerStart').datepicker('update');
+              @* $('#datetimepickerStart').datepicker().children('input').val(@ViewBag.startdatepik);*@
+          }
+        $("#dropdownmenuuser").click(function () {
+            $("#dropdownmenuuser").toggleClass('open');
+        });
+        $("#FloorId").addClass("form-control");
+        $("#RoomTypeId").addClass("form-control");
+        $('#datetimepickerStart').datetimepicker({
+            minDate: new Date() ,format: 'DD/MM/YYYY'
+        }).on('dp.show', function () {
+            return $(this).data('DateTimePicker').defaultDate(new Date());
+        });
+        //$("#datetimepicker1").find("input").val();       get value using jquery
+        $('#datetimepickerEnd').datetimepicker({
+            minDate: new Date(), format: 'DD/MM/YYYY'
+        }).on('dp.show', function () {
+            return $(this).data('DateTimePicker').defaultDate(new Date());
+        });
+        $('#datetimepickerEnd').datetimepicker({
+            inline: true,
+            sideBySide: true
+        });
+        $(".form_datetime").datetimepicker({
+            format: "dd MM yyyy - hh:ii"
+        });
+        $('#datetimepicker1').datetimepicker();
+        $("#ValidationMsg").css('display', 'none');
+
+          if ('@ViewBag.StatusMsg' == "Success") {
+                toastr.success('Room Created Successfully');
+          }
+          else if ('@ViewBag.StatusMsg' == "Exist") {
+              toastr.warning('Room Created Successfully');
+        }
+          else if ('@ViewBag.startdatelarge' == "largestart") {
+              toastr.warning('StartDate Should Not Be Grater than to EndDate  !!');
+            }
+    });
+    $('.content').on('keypress', 'input[type=number][maxlength]', function (event) {
+        var key = event.keyCode || event.charCode;
+        var charcodestring = String.fromCharCode(event.which);
+        var txtVal = $(this).val();
+        var maxlength = $(this).attr('maxlength');
+        var regex = new RegExp('^[0-9]+$');
+        // 8 = backspace 46 = Del 13 = Enter 39 = Left 37 = right Tab = 9
+        if (key == 8 || key == 46 || key == 13 || key == 37 || key == 39 || key == 9) {
+            return true;
+        }
+        // maxlength allready reached
+        if (txtVal.length == maxlength) {
+            event.preventDefault();
+            return false;
+        }
+        // pressed key have to be a number
+        if (!regex.test(charcodestring)) {
+            event.preventDefault();
+            return false;
+        }
+        return true;
+    });
+    $('.content').on('paste', 'input[type=number][maxlength]', function (event) {
+        //catch copy and paste
+        var ref = $(this);
+        var regex = new RegExp('^[0-9]+$');
+        var maxlength = ref.attr('maxlength');
+        var clipboardData = event.originalEvent.clipboardData.getData('text');
+        var txtVal = ref.val();//current value
+        var filteredString = '';
+        var combined_input = txtVal + clipboardData;//dont forget old data
+
+        for (var i = 0; i < combined_input.length; i++) {
+            if (filteredString.length < maxlength) {
+                if (regex.test(combined_input[i])) {
+                    filteredString += combined_input[i];
+                }
+            }
+        }
+        setTimeout(function () {
+            ref.val('').val(filteredString)
+        }, 100);
+    });
+    function validateTime(obj) {
+        var timeValue = $("#sHour").val();//obj.value;
+        if (timeValue == "" || timeValue < 0) {
+           // alert("Invalid Time format");
+            toastr.warning('Invalid Start Hour');
+            return false;
+        }
+        else {
+            var sHours = $("#sHour").val();// timeValue;//timeValue.split(':')[0];
+            var sMinutes = $("#sMin").val();// timeValue;
+
+            if (sHours == "" || isNaN(sHours) || parseInt(sHours) > 23) {
+                toastr.warning('Invalid  Start Hour Time format');
+                return false;
+            }
+            else if (parseInt(sHours) == 0)
+                sHours = "00";
+            else if (sHours < 10)
+                sHours = "0" + sHours;
+            obj.value = sHours //+ ":" + sMinutes;
+        }
+
+        return true;
+    }
+    function validateTimeehour(obj) {
+        var timeValue = $("#eHour").val();// obj.value;
+        if (timeValue == "" || timeValue < 0) {
+            // alert("Invalid Time format");
+            toastr.warning('Invalid End Hour Time format');
+            return false;
+        }
+        else {
+            var sHours = $("#eHour").val();// timeValue;//timeValue.split(':')[0];
+            //var sMinutes = $("#sMin").val();// timeValue;
+
+            if (sHours == "" || isNaN(sHours) || parseInt(sHours) > 23) {
+                toastr.warning('Invalid End Hour Time format');
+                return false;
+            }
+            else if (parseInt(sHours) == 0)
+                sHours = "00";
+            else if (sHours < 10)
+                sHours = "0" + sHours;
+            obj.value = sHours //+ ":" + sMinutes;
+        }
+
+        return true;
+    }
+    function validateTimesMin(obj) {
+        var timeValue = $("#sMin").val();// obj.value;
+        if (timeValue == "" || timeValue < 0) {
+            // alert("Invalid Time format");
+            toastr.warning('Invalid Start Minute Time format');
+            return false;
+        }
+        else {
+           // var sHours = $("#sHour").val();// timeValue;//timeValue.split(':')[0];
+            var sMinutes = $("#sMin").val();// timeValue;
+            if (sMinutes == "" || isNaN(sMinutes) || parseInt(sMinutes) > 59) {
+                toastr.warning('Invalid Start Minute Time format');
+                return false;
+            }
+            else if (parseInt(sMinutes) == 0)
+                sMinutes = "00";
+            else if (sMinutes < 10)
+                sMinutes = "0" + sMinutes;
+
+            obj.value = sMinutes //+ ":" + sMinutes;
+        }
+
+        return true;
+    }
+    function validateTimeeMin(obj) {
+        var timeValue = $("#eMin").val();// obj.value;
+        if (timeValue == "" || timeValue < 0) {
+            // alert("Invalid Time format");
+            toastr.warning('Invalid End Minute Time format');
+            return false;
+        }
+        else {
+            // var sHours = $("#sHour").val();// timeValue;//timeValue.split(':')[0];
+            var sMinutes = $("#eMin").val();// timeValue;
+
+            //if (sHours == "" || isNaN(sHours) || parseInt(sHours) > 23) {
+            //    toastr.warning('Invalid Time format');
+            //    return false;
+            //}
+            //else if (parseInt(sHours) == 0)
+            //    sHours = "00";
+            //else if (sHours < 10)
+            //    sHours = "0" + sHours;
+
+            if (sMinutes == "" || isNaN(sMinutes) || parseInt(sMinutes) > 59) {
+                toastr.warning('Invalid End Minute Time format');
+                return false;
+            }
+            else if (parseInt(sMinutes) == 0)
+                sMinutes = "00";
+            else if (sMinutes < 10)
+                sMinutes = "0" + sMinutes;
+                obj.value = sMinutes //+ ":" + sMinutes;
+        }
+
+        return true;
+    }
+
+    $("#SectionPartialDiv").on("click", "button[id*='btnBook_']", function () {
+
+        var isvalid = true;
+        var id = $(this).parent().find('#hdnRoomId').val();
+        var hdnRoomName = $(this).parent().find('#hdnRoomName').val();
+        var hdnRoomNumber = $(this).parent().find('#hdnRoomNumber').val();
+        var hdnFloorName = $(this).parent().find('#hdnFloorName').val();
+        var hdnRoomTypeName = $(this).parent().find('#hdnRoomTypeName').val();
+        var StartDate = $("#datetimepickerStart").find("input").val();
+        var EndDate = $("#datetimepickerEnd").find("input").val();
+        var sMin = parseInt($("#sMin").val());
+        var eMin = parseInt($("#eMin").val());
+        var sHour = parseInt($("#sHour").val());
+        var eHour = parseInt($("#eHour").val());
+        var ssMin = $("#sMin").val();
+        var eeMin = $("#eMin").val();
+        var ssHour =$("#sHour").val();
+        var eeHour =$("#eHour").val();
+        var SAMPM = "AM";
+        var EAMPM = "AM";
+        if (sHour != "" && sHour > 23) {
+            isvalid = false;
+            toastr.warning('start hour should be less than 24  !!');
+        }
+        if (sHour < 0) {
+            isvalid = false;
+            toastr.warning('start hour should  positive number  !!');
+        }
+
+        if (sMin > 59) {
+            isvalid = false;
+            toastr.warning(' start minute should be less than 60 !!');
+        }
+        if (sMin < 0) {
+            isvalid = false;
+            toastr.warning('start minute should  positive number !!');
+        }
+
+        if (eHour > 23) {
+            isvalid = false;
+            toastr.warning('end hour should be less than 24 !!');
+        }
+        if (eHour < 0) {
+            isvalid = false;
+            toastr.warning('end hour should  positive number  !!');
+        }
+        if (eMin > 59) {
+            isvalid = false;
+            toastr.warning('end minute should be less than 60 !!');
+        }
+        if (eMin < 0) {
+            isvalid = false;
+            toastr.warning('end minute should  positive number !!');
+        }
+        if (sHour >= 12)
+        {
+            SAMPM = "PM";
+        }
+        else {
+            SAMPM = "AM";
+        }
+        if (eHour >= 12)
+        {
+            EAMPM = "PM";
+        }
+        else {
+            EAMPM = "AM";
+        }
+        if (ssHour == "" ) {
+            isvalid = false;
+            toastr.warning('Start Hour Should Not Be Empty !!');
+            $("#sHour").addClass('IsValid');
+        }
+        if (eeHour == "" ) {
+            isvalid = false;
+            toastr.warning('Start Minute Should Not Be Empty !!');
+            $("#sHour").addClass('IsValid');
+        }
+        if (ssMin == "") {
+            isvalid = false;
+            toastr.warning('End Hour Should Not Be Empty !!');
+            $("#datetimepickerStart").addClass('IsValid');
+        }
+        if (eeMin == "" ) {
+            isvalid = false;
+            toastr.warning('End Minute Should Not Be Empty !!');
+            $("#datetimepickerStart").addClass('IsValid');
+        }
+        var start = StartDate + " " + sHour + ":" + sMin + " " + SAMPM;
+        var End = EndDate + " " + eHour + ":" + eMin + " " + EAMPM;
+        if (StartDate == "") {
+            isvalid = false;
+            toastr.warning('StartDate Should Not Be Empty !!');
+            $("#datetimepickerStart").find("input").addClass('IsValid');
+        } else { $("#datetimepickerStart").find("input").removeClass('IsValid'); }
+        if (EndDate == "") {
+            isvalid = false;
+            toastr.warning('EndDate Should Not Be Empty !!');
+            $("#datetimepickerEnd").find("input").addClass('IsValid');
+        } else { $("#datetimepickerEnd").find("input").removeClass('IsValid'); }
+        if (process(StartDate) > process(EndDate)) {
+            isvalid = false;
+            toastr.warning('StartDate Should Not Be Grater than to EndDate  !!');
+        }
+        // var id = $(this).parent().find('#hdnRoomId').val();
+        if (isvalid == true) {
+            var html = '';
+            var description = '<div class="col-md-6 col-xs-12  mb-15">';
+            description += '<p><b>Start Date :</b>' + start + '</p>';
+            description += '<p><b>End Date :</b>' + End + '</p>';
+            description += '<p><b>Floor :</b>' + hdnRoomName + '</p>';
+            description += '<p><b>RoomType :</b>' + hdnRoomNumber + '</p>';
+            if (hdnFloorName != null) {
+                description += '<p><b>Room Name :</b>' + hdnFloorName + '</p>';
+            };
+            if (hdnRoomTypeName != null) {
+                description += '<p><b>Room Number :</b>' + hdnRoomTypeName + '</p>';
+            };
+            description += '</div>';
+            description += '<div class="col-md-6 col-xs-12">';
+
+            description += '<input type="hidden" id="HiddenRoomId" name="custId" value=' + id + '>';
+            description += '<p><b>Description :</b> <textarea class="form-control" rows="3" maxlength="200" id="descriptionpop" ></textarea> </p>';
+            description += '<p><b>Capacity (person) :</b> <input type = "number" onKeyDown=" return validatecapacity(this)" class="form-control" maxlength = "2"  min="1"     id="capacitypop" />  </p>';
+            description += '</div>';
+            // $description.append($('<p/>').html('<b>Description:</b>' + calEvent.description));
+            $('#ConformBook #CalenderBody').empty().html(description);
+            $('#ConformBook').modal('show');
+        }
+    });
+    $("#MINCapacity,#MAxCapacity,#sHour,#sMin,#eHour,#eMin").keypress(function (evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode != 43 && charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    });
+    function validatecapacity(evt) {
+        if ($("#capacitypop").val().length > 2) { return false; }
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode != 43 && charCode > 31 && (charCode < 48 || charCode > 57)) { return false; }
+        else if (charCode == 69) { return false; }
+        else { return true; }
+    }
+
+    $("#ConformBookRoom").click(function () {
+        var Id = $("#HiddenRoomId").val();
+        var isvalid = true;
+        var RoomId = Id;
+        var Start = $("#datetimepickerStart").find("input").val();
+        var End = $("#datetimepickerEnd").find("input").val();
+        var Description = $("#descriptionpop").val();
+        var Capacity = $("#capacitypop").val();
+        var sMin = $("#sMin").val();
+        var eMin = $("#eMin").val();
+        var sHour = $("#sHour").val();
+        var eHour = $("#eHour").val();
+
+        if (Start == "") {
+            isvalid = false;
+            toastr.warning('StartDate Should Not Be Empty !!');
+            $("#datetimepickerStart").find("input").addClass('IsValid');
+        } else { $("#datetimepickerStart").find("input").removeClass('IsValid'); }
+        if (End == "") {
+            isvalid = false;
+            toastr.warning('EndDate Should Not Be Empty !!');
+            $("#datetimepickerEnd").find("input").addClass('IsValid');
+        } else { $("#datetimepickerEnd").find("input").removeClass('IsValid'); }
+        if (process(Start) > process(End)) {
+            isvalid = false;
+            toastr.warning('StartDate Should Not Be Grater than to EndDate  !!');
+        }
+        if (isvalid == true) {
+            $.ajax({
+                type: 'POST',
+                //  data: { RoomId: RoomId, Start: Start, End: End, Description: Description, Capacity: Capacity },
+                data: { RoomId: RoomId, Start: Start, End: End, Description: Description, Capacity: Capacity, sMin: sMin, sHour: sHour, eMin: eMin, eHour: eHour},
+                url: '/BookRoom/SaveBookRoomDetail',
+                success: function (response) {
+                    if (response.result == 'Redirect') {
+                        window.location = response.url;
+                        toastr.success('Your Booking has been confirmed');
+                    }
+                    else if (response.result == 'RedirectExist') {
+                        toastr.warning('Room allready Booked');
+                    }
+                    else if (response.result == 'Expire') {
+                        window.location = response.url;
+                    }
+                    else if (response.result == 'Error') {
+                        window.location = response.url;
+                    }
+                    else if (response.result == 'Greter') {
+                        toastr.warning('StartDate Should Not Be Grater than to EndDate  !!');
+                       // window.location = response.url;
+                    }
+                },
+                //error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //    $("#ValidationMsg").show();
+
+                //}
+            });
+        } else {
+            $("#ValidationMsg").css('display', 'block');
+            $("#ValidationMsg").show();
+            //throw exception
+            return false;
+        }
+    });
+
+    function process(date) {
+        var parts = date.split("/");
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+    }
+
+</script>

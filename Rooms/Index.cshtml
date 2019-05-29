@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Rooms | Meeting Room";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+<link rel="stylesheet" href="http://cdn.datatables.net/plug-ins/a5734b29083/integration/bootstrap/3/dataTables.bootstrap.css" />
+<link rel="stylesheet" href="http://cdn.datatables.net/responsive/1.0.2/css/dataTables.responsive.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<script src="~/Scripts/Lib/jquery.js"></script>
+<div class="row" id="domMessage" style="display: none;">
+    <img id="loading"
+         alt="Updating ..." src="~/Content/Img/loader-large.gif" /><br />  Processing your request.
+</div>
+<section class="content">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Manage Rooms</h3>
+        </div>
+        <div class="box-body">
+            <div class="innerContent">
+                <!-- Add Room Type -->
+                <div class="col-md-3 pull-left">
+                    @Html.ActionLink("Create New Room", "Create", "Rooms", null, new { @class = "btn btn-primary  btn-block" })
+                </div>
+                <div class="bodyContent RoomTableDiv">
+                    @Html.Action("List", "Rooms")
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><b><span id="eventTitle">Conform Delete</span></b></h4>
+            </div>
+            <div id="CalenderBody" class="modal-body">
+                <p id="pDetails"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="activepopupClose()"  class="btn btn-info" data-dismiss="modal">Cancel</button>
+                <button type="button" id="DeleteRoomAllRef" class="btn btn-info pull-right">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModalACTDACT" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><b><span id="eventTitle">Change Status</span></b></h4>
+            </div>
+            <div id="CalenderBody" class="modal-body">
+                <p id="pDetails"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="activepopupClose()"  class="btn btn-info" data-dismiss="modal">Cancel</button>
+                <button type="button" id="ACTDACTRoomAllRef" class="btn btn-info pull-right">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Custom/Room.js"></script>
+@section scripts
+{
+<script>
+        $(function () {
+            $.unblockUI();
+
+            if ('@TempData["create"]' == "donecrate") {
+                toastr.success('Room Created Successfully Successfully');
+            } else if ('@TempData["update"]' == "doneupdate") {
+                toastr.success('Room Updated Successfully Successfully');
+            }
+            $("#dropdownmenuuser").click(function () {
+                $("#dropdownmenuuser").toggleClass('open');
+            });
+            $('.rooms').DataTable({
+                responsive: true,
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                "sDom": 'Rfrtlip',
+                "pageLength": 10,
+                "responsive": true,
+                'ordering': true,
+                'info': true,
+                "bAutoWidth": false,
+                "fixedColumns": true,
+                'lengthMenu': [[5, 10, 15, 20, 25], [5, 10, 15, 20, 25]],
+                'scrollX': true,
+                "scrollY": "600px",
+                "scrollCollapse": true,
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+            });
+            $('#rooms').DataTable();
+        });
+</script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+}
